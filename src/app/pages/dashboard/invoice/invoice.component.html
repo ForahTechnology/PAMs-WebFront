@@ -1,0 +1,47 @@
+<!-- invoice display -->
+<ng-container>
+  <section class="all-clients-container">
+    <div class="row mb-4 justify-content-between">
+      <div class="col-md-2">
+        <span style=" font-weight: bolder; font-size: 20px;">Invoice List</span>
+      </div>
+      <div class="col-md-5 d-flex align-items-center" style=" font-weight: bolder; font-size: 14px;">
+
+        <div class="mr-4">
+          <img src="assets/sort.svg" alt="">
+          <span>
+            Sort
+          </span>
+        </div>
+        <div class="mr-4">
+          <img src="assets/filter.svg" alt="">
+          <span>
+            Filter
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row border-bottom mb-3">
+      <div class="col">Customer Name</div>
+      <div class="col">Invoice Date</div>
+      <div class="col">Payment Due</div>
+      <div class="col">Sample Tested</div>
+      <div class="col">Amount Due</div>
+      <div class="col">Action</div>
+    </div>
+    <div class="row py-2 border-bottom" *ngFor="let invoice of allInvoice">
+      <div class="col">
+        <span>
+          {{invoice.name}}
+        </span>
+        <span>{{invoice.address}}</span>
+      </div>
+      <div class="col">{{invoice.email}}</div>
+      <div class="col"></div>
+      <!-- <div class="col">
+                <ng-select formControlName="" [items]="client.samplings" bindLabel="name" bindValue="id">
+                </ng-select>
+              </div> -->
+    </div>
+  </section>
+</ng-container>

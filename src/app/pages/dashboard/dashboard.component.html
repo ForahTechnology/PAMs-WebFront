@@ -1,0 +1,110 @@
+  <!-- Side navigation -->
+  <nav style="position: absolute; z-index: 99;">
+    <input type="checkbox" name="open" id="open">
+    <label for="open" class="open" (click)="displayLeftMenu()">
+      <i class="bi bi-chevron-right"></i>
+    </label>
+    <div class="menu">
+          <div class="main--menu-bg">
+            <div style=" width: 213px; padding: 20px 40px; margin: auto;">
+              <img width="100%" src="assets/seth_logo.jpeg" alt="seth logo">
+            </div>
+            <div style=" width: 200px; padding-bottom: 45px; margin: auto;">
+              <img width="100%" src="assets/menu_icons/logo.svg" alt="seth logo">
+            </div>
+            <div>
+              <ul>
+                <li (click)="navigateToDashboard()" class="left--menu"><img class="mr-2" src="assets/menu_icons/Vector.svg"
+                    alt=""> Overview</li>
+                <li (click)="toggleSubMenu('SAMPLING')" class="left--menu"><img class="mr-2"
+                    src="assets/menu_icons/chemistry.svg" alt="">Sampling Module</li>
+                <li (click)="toggleSubMenu('ASSETS')" class="left--menu"><img class="mr-2" src="assets/menu_icons/tickets.svg"
+                    alt="">Asset Management</li>
+                <li class="left--menu"><img class="mr-2" src="assets/menu_icons/articles.svg" alt="">Invoicing</li>
+                <!-- <li class="left--menu"><img class="mr-2" src="assets/menu_icons/print.svg" alt="">Report</li> -->
+                <li (click)="toggleSubMenu('CUSTOMER')" class="left--menu"><img class="mr-2"
+                    src="assets/menu_icons/contacts.svg" alt="">Customer Mgt</li>
+                <li routerLink="users" (click)="isDashboard = false" *ngIf="authenticatedUser.role == 'SuperAdmin'" class="left--menu"><img class="mr-2"
+                    src="assets/menu_icons/subscription.svg" alt="">
+                  User Management
+                </li>
+                <li class="left--menu"><img class="mr-2" src="assets/menu_icons/settings.svg" alt="">Settings</li>
+                <li class="left--menu" (click)="logout()" >
+                  <span style="font-size: 20px; margin-left:8px;">❰</span>
+                  <span class="ml-3">Logout</span> </li>
+              </ul>
+            </div>
+          </div>
+          <div class="sub--menu-bg scale-up-hor-left" *ngIf="displaySubMenu">
+            <ng-container>
+              <div *ngIf="subMenuOption == 'CUSTOMER'">
+                <h3 style="padding: 45px 32px;">Customer</h3>
+                <ul>
+                  <li routerLink="customer" (click)="hideSubMenu('add')" class="left--menu">Add Customer</li>
+                  <li routerLink="customer" (click)="hideSubMenu('all')" class="left--menu">All Customer</li>
+                </ul>
+              </div>
+
+              <div *ngIf="subMenuOption == 'SAMPLING'">
+                <h3 style="padding: 45px 32px;">Sampling</h3>
+                <ul>
+                  <li routerLink="sample/create" (click)="hideSubMenu('add')" class="left--menu">Create Lab Sample</li>
+                  <li (click)="showDropDown = !showDropDown" class="left--menu">Field Samples
+                    <div *ngIf="showDropDown">
+                      <li routerLink="sample/FMEnv" (click)="hideSubMenu('all', 'FMEnv')" class="left--menu">FMEnv</li>
+                      <li routerLink="sample/Nesrea" (click)="hideSubMenu('all', 'Nesrea')" class="left--menu">Nesrea</li>
+                      <li routerLink="sample/DPR" (click)="hideSubMenu('all', 'DPR')" class="left--menu">DPR</li>
+                    </div>
+                  </li>
+                  <li routerLink="labSamples" (click)="hideSubMenu('')" class="left--menu">Lab Samples</li>
+                  <!-- <div *ngIf="showDropDown">
+                    <li routerLink="sample/FMEnv" (click)="hideSubMenu('all', 'FMEnv')" class="left--menu">FMEnv</li>
+                    <li routerLink="sample/Nesrea" (click)="hideSubMenu('all', 'Nesrea')" class="left--menu">Nesrea</li>
+                    <li routerLink="sample/DPR" (click)="hideSubMenu('all', 'DPR')" class="left--menu">DPR</li>
+                  </div> -->
+
+                </ul>
+              </div>
+
+              <div *ngIf="subMenuOption == 'ASSETS'">
+                <h3 style="padding: 45px 32px;">Assets Management</h3>
+                <ul>
+                  <li routerLink="assets-management" (click)="hideSubMenu('add')" class="left--menu">Add Equipment</li>
+                  <li routerLink="assets-management/stock" (click)="hideSubMenu('add')" class="left--menu">Add Stock</li>
+                  <!-- <li routerLink="assets-management/stock" (click)="hideSubMenu('add')" class="left--menu">Add Stock</li> -->
+                  <li routerLink="assets-management/items/all" (click)="hideSubMenu('all')" class="left--menu">All List</li>
+                </ul>
+              </div>
+            </ng-container>
+          </div>
+    </div>
+  </nav>
+
+  <!-- Page content -->
+  <div class="main" (click)="displaySubMenu = false" id="parent-section" [ngStyle]="{'margin-left': (currentScreenWidth <= 760 ? '0px' : (hideLeftMenu) ? '0px' : '220px')}">
+    <section (click)="displaySubMenu = false" id="parent-section" [ngStyle]="{'background': isDashboard ? 'url(../../../assets/bg.png)' : null, 'background-size':'cover', 'padding':'0px 30px'}">
+      <section class="mb-3">
+        <div class="row justify-content-between">
+          <div class="">
+            <span class="title">Keep Green and Keep our Planet Clean</span>
+            <span class="date"> {{date}} </span>
+          </div>
+          <div class="col">
+            <div class="float-right">
+              <span style="font-weight: 700;">{{authenticatedUser?.fullname}}</span>
+              <span class="dp__container"> <img style="    padding-left: 10px;" width="100%" src="assets/dp.svg" alt="profile picture"> </span>
+            </div>
+          </div>
+        </div>
+        <!-- <div *ngIf="authenticatedUser == null " >
+            <p>Your account has been suspended! kindly contact the Admin.</p>
+          </div> -->
+      </section>
+
+
+
+
+
+      <router-outlet></router-outlet>
+    </section>
+  </div>

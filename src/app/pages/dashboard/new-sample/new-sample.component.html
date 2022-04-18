@@ -1,0 +1,81 @@
+<app-ui-preloader [display]="isLoading"></app-ui-preloader>
+<section *ngIf="!isLoading" class="all-clients-container">
+  <div style="overflow: hidden auto; height: calc(100vh - 190px);">
+    <div class="row mb-4 justify-content-between">
+      <div class="col-md-2 d-flex">
+        <span style=" font-weight: bolder; margin-top: auto; font-size: 20px;">{{selectSample}}</span>
+        <div class="ml-3 d-flex" *ngIf="selectSample =='FMEnv'">
+          <button class="fmenvOptons__btn" [ngStyle]="{'border-bottom' : selectedIndex == 0 ? '2px solid blue' : 'none' }" (click)="toggleFmenvOptions(0)" >BEVERAGES</button>
+          <button class="fmenvOptons__btn" [ngStyle]="{'border-bottom' : selectedIndex == 1 ? '2px solid blue' : 'none' }" (click)="toggleFmenvOptions(1)" >AGRICULTURAL</button>
+          <button class="fmenvOptons__btn" [ngStyle]="{'border-bottom' : selectedIndex == 2 ? '2px solid blue' : 'none' }" (click)="toggleFmenvOptions(2)" >BREWERY</button>
+        </div>
+      </div>
+      <div class="col-md-5 d-flex align-items-center" style=" font-weight: bolder; font-size: 14px;">
+        <div class="mr-4 p-relative">
+          <img src="assets/search.svg" class="search-icon" alt="">
+          <input class="form-control" type="text">
+        </div>
+        <div class="mr-4">
+          <img src="assets/sort.svg" alt="">
+          <span>
+            Sort
+          </span>
+        </div>
+        <div class="mr-4">
+          <img src="assets/filter.svg" alt="">
+          <span>
+            Filter
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row border-bottom mb-3">
+      <div class="col "><span class="my_headers">Parameter</span></div>
+      <div class="col my_headers">Input</div>
+      <div class="col my_headers">Unit Measurement</div>
+      <div class="col my_headers">DPR limit</div>
+      <div class="col my_headers">Action</div>
+    </div>
+    <form [formGroup]="microbialParametersFormGroup">
+      <div class="row py-3 border-bottom" *ngFor="let item of selectedTemplate.microbialParameters; let sampleIndex = index" >
+        <div class="col">
+          <p>
+            {{item.microbial_Group}}
+          </p>
+        </div>
+        <div class="col"><input type="text" [formControlName]="item.microbial_Group"></div>
+        <div class="col"> {{item.unit}} </div>
+        <div class="col" style="font-weight: 600;">
+          {{item.limit}}
+        </div>
+        <div class="col"><img (click)="removeSample(sampleIndex, item.microbial_Group)" src="assets/cancel.svg" alt=""></div>
+      </div>
+    </form>
+    <form [formGroup]="physicoParametersFormGroup">
+      <div class="row py-3 border-bottom" *ngFor="let item of selectedTemplate.physicoParameters; let sampleIndex = index">
+        <div class="col">
+          <p>
+            {{item.parameter}}
+          </p>
+        </div>
+        <div class="col"><input type="text" [formControlName]="item.parameter"></div>
+        <div class="col"> {{item.unit}} </div>
+        <div class="col" style="font-weight: 600;">
+          {{item.limit}}
+        </div>
+        <div class="col"><img (click)="removePhysicoSample(sampleIndex, item.parameter)" src="assets/cancel.svg" alt="">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="mt-4">
+    <!-- <button class="d-inline btn mr-2" style="color:white; background: #6E41E2;"  type="submit"> Upload Image</button> -->
+    <button class="d-inline btn float-right mr-2" style="color:white; background: #6E41E2;" (click)="addTodo()" type="submit">
+      <span class="spinner-border spinner-border-sm text-white text-center mr-2" role="status" *ngIf="isSubmitting">
+        <span class="sr-only">Loading...</span>
+      </span>Submit</button>
+    <!-- <button class="d-inline btn mr-2" style="color:white; background: #6E41E2;"  type="submit"> View</button> -->
+    <!-- <ngb-pagination [collectionSize]="nesreaTemplate.physicoParameters.length + nesreaTemplate.physicoParameters.length" [(page)]="page" [directionLinks]="false"></ngb-pagination> -->
+
+  </div>
+</section>

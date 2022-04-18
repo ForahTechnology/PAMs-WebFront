@@ -1,0 +1,129 @@
+<app-ui-preloader [display]="isLoading" ></app-ui-preloader>
+<ng-container *ngIf="linkType == 'create' && !isLoading" >
+  <section class="all-clients-container">
+    <div class="row mb-4 justify-content-between">
+      <div class="col-md-2">
+        <span style=" font-weight: bolder; font-size: 20px;">Customer List</span>
+      </div>
+      <div class="col-md-5 d-flex align-items-center" style=" font-weight: bolder; font-size: 14px;">
+        <div class="mr-4 p-relative">
+          <img src="assets/search.svg" class="search-icon" alt="">
+          <input class="form-control" type="text">
+        </div>
+        <div class="mr-4">
+          <img src="assets/sort.svg" alt="">
+          <span>
+            Sort
+          </span>
+        </div>
+        <div class="mr-4">
+          <img src="assets/filter.svg" alt="">
+          <span>
+            Filter
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row border-bottom mb-3">
+      <div class="col">Client</div>
+      <div class="col">Email Address</div>
+      <div class="col">Contact Person</div>
+      <div class="col">Sample</div>
+    </div>
+    <div class="row py-3 border-bottom" *ngFor="let client of allClients">
+      <div class="col">
+        <span class="client-name">
+          {{client.name}}
+        </span>
+        <span style="font-size: 14px;">{{client.address}}</span>
+      </div>
+      <div class="col" style="font-weight: 600;">{{client.email}}</div>
+      <div class="col"></div>
+      <div class="col" style="font-weight: 600;">
+        <ng-select (change)="selectSample($event, client.id)" [items]="client.templates" [placeholder]="client.templates[0]">
+        </ng-select>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize" (pageChange)="getAllClients($event)"
+        [collectionSize]="totalCollection"></ngb-pagination>
+    </div>
+  </section>
+</ng-container>
+
+<ng-container *ngIf="linkType !== 'create' &&  !isLoading">
+  <section class="all-clients-container">
+    <div class="row mb-4 justify-content-between">
+      <div class="col-md-2">
+        <span style=" font-weight: bolder; font-size: 20px;">All Samples List</span>
+      </div>
+      <div class="col-md-5 d-flex align-items-center" style=" font-weight: bolder; font-size: 14px;">
+        <div class="mr-4 p-relative">
+          <img src="assets/search.svg" class="search-icon" alt="">
+          <input class="form-control" type="text">
+        </div>
+        <!-- <div class="mr-4">
+          <img src="assets/sort.svg" alt="">
+          <span>
+            Sort
+          </span>
+        </div> -->
+        <div class="mr-4">
+          <img src="assets/filter.svg" alt="">
+          <span>
+            Filter
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row border-bottom mb-3">
+      <div class="col-2 text-center" style="font-weight: 600;">Customer</div>
+      <div class="col text-center" style="font-weight: 600;">Sample Tested</div>
+      <div class="col-2 text-center" style="font-weight: 600;">Analyst</div>
+      <div class="col-2 text-center" style="font-weight: 600;">Location</div>
+      <div class="col text-center" style="font-weight: 600;">Date</div>
+      <div class="col text-center" style="font-weight: 600;">Action</div>
+    </div>
+    <div class="row py-3 border-bottom" *ngFor="let sample of allSamples; let _index = index">
+      <div class="col">
+        <span >
+          {{sample.clientName}}
+        </span>
+      </div>
+      <div class="col-2">
+        <span >
+          {{sample.name}}
+        </span>
+      </div>
+      <!-- <div class="col" style="font-weight: 600;">
+        <ng-select [items]="sample.templates" [placeholder]="sample.templates[0]">
+        </ng-select>
+      </div> -->
+      <div class="col-2">
+        <span>{{sample.analystFullName}}</span>
+      </div>
+      <div class="col-2">
+        <span>{{sample.samplePointName}}</span>
+      </div>
+      <div class="col">{{sample.time | date:'short'}}</div>
+      <div>
+        <span class="spinner-border spinner-border-sm text-success text-center mr-2" role="status" *ngIf="isDownloading && _index == index">
+          <span class="sr-only">Loading...</span>
+        </span>
+        <button (click)="downloadPhotos(sample.samplePointLocationId, sample.id, sample.name, _index)" class="non--bg__border mr-3" >
+          <span><img src="assets/download.svg" alt=""></span>
+          <p>Photos</p>
+        </button>
+        <!-- <button class="non--bg__border" >
+          <span><img src="assets/download.svg" alt=""></span>
+          <p>Certificate</p>
+        </button> -->
+
+        <button  (click)="downloadResult(sample.samplePointLocationId, sample.id, sample.name, _index)"  class="non--bg__border">
+          <span><img src="assets/download.svg" alt=""></span>
+          <p>Results</p>
+        </button>
+      </div>
+    </div>
+  </section>
+</ng-container>

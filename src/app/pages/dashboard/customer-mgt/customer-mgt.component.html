@@ -1,0 +1,142 @@
+<!-- add new client -->
+<ng-container *ngIf="linkType == 'add'">
+  <section >
+    <div class="d-flex py-4 justify-content-between" style="padding-right: 38px;">
+      <div class="col-4">
+        <h3 class="title">Add Customer</h3>
+      </div>
+      <div class="col-3">
+        <button class="btn btn-outline-dark save--btn" [disabled]="addNewClientForm.invalid"
+          (click)="submitNewClientData()">
+          <div *ngIf="isLoading" class="spinner-border text-primary spinner-border-sm" role="status">
+            <span class="sr-only">Loading...</span>
+          </div> Save Changes</button>
+      </div>
+    </div>
+    <div class="col-10 p-5 mb-5 newClientBg">
+      <form [formGroup]="addNewClientForm" class="row">
+        <div class="mt-1 mb-4 col-md-6 mb-4">
+          <div class="d-flex">
+            <label style="color: white;">Name<span class="text-danger">*</span>
+            </label>
+          </div>
+          <input formControlName="name" class="form-control" type="text">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-6">
+          <div class="d-flex">
+            <label style="color: white;">Email<span class="text-danger">*</span>
+            </label>
+          </div>
+          <input formControlName="email" class="form-control" type="email">
+        </div>
+        <div class="mt-1 mb-4 col-md-6">
+          <div class="d-flex">
+            <label style="color: white;">Address<span class="text-danger">*</span>
+            </label>
+          </div>
+          <input formControlName="address" class="form-control" type="text">
+        </div>
+        <div class="mt-1 mb-4 col-md-6">
+          <div class="d-flex">
+            <label style="color: white;">Samples<span class="text-danger">*</span>
+            </label>
+          </div>
+          <ng-select (add)="selectTemplate($event)" formControlName="sampleTemplates"  [multiple]="true" [items]="templateSamples" bindLabel="name"
+          bindValue="type" >
+          </ng-select>
+        </div>
+      </form>
+    </div>
+  </section>
+</ng-container>
+
+<!-- all client list -->
+<ng-container *ngIf="linkType == 'all'">
+  <section class="all-clients-container">
+    <div class="row mb-4 justify-content-between">
+      <div class="col-md-2">
+        <span style=" font-weight: bolder; font-size: 20px;">Customer List</span>
+      </div>
+      <div class="col-md-5 d-flex align-items-center" style=" font-weight: bolder; font-size: 14px;">
+        <div class="mr-4 p-relative">
+          <img src="assets/search.svg" class="search-icon" alt="">
+          <input class="form-control" type="text">
+        </div>
+        <div class="mr-4">
+          <img src="assets/sort.svg" alt="">
+          <span>
+            Sort
+          </span>
+        </div>
+        <div class="mr-4">
+          <img src="assets/filter.svg" alt="">
+          <span>
+            Filter
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row border-bottom mb-3">
+      <div class="col">Client</div>
+      <div class="col">Email Address</div>
+      <div class="col">Sample</div>
+    </div>
+    <div class="row py-3 border-bottom" *ngFor="let client of allClients">
+      <div class="col">
+        <span class="client-name">
+          {{client.name}}
+        </span>
+        <span style="font-size: 14px;">{{client.address}}</span>
+      </div>
+      <div class="col" style="font-weight: 600;">{{client.email}}</div>
+      <div class="col" style="font-weight: 600;">
+        <ng-select [items]="client.templates" [placeholder]="client.templates[0]">
+        </ng-select>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize" (pageChange)="getAllClients($event)" [collectionSize]="totalCollection"></ngb-pagination>
+    </div>
+  </section>
+</ng-container>
+
+<ng-template #addLocation let-modal>
+  <ng-container>
+    <div class="modal-header">
+      <h4 class="modal-title">Add Client Location</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="newLocationForm">
+        <div class="row justify-content-around">
+          <div class="mt-1 mb-4 col-12">
+            <div class="d-flex">
+              <label>Address <span style="color: red;" >*</span>
+              </label>
+            </div>
+            <input formControlName="address" class="form-control" type="text">
+          </div>
+
+          <div class="mt-1 mb-4 col">
+            <div class="d-flex">
+              <label>Description
+              </label>
+            </div>
+            <input formControlName="description" class="form-control" type="text">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button [disabled]="newLocationForm.invalid" (click)="submitLocatoinDetails()" class="btn btn-success">
+        <span class="spinner-border spinner-border-sm text-white text-center mr-2" role="status" *ngIf="isAddingLocation">
+          <span class="sr-only">Loading...</span>
+        </span>
+        Submit
+      </button>
+    </div>
+  </ng-container>
+</ng-template>

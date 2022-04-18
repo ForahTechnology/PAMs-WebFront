@@ -1,0 +1,10 @@
+.client-name{
+    display: block;
+    font-weight: bold;
+    font-size: 19px;
+}
+
+.non--bg__border{
+  border: none;
+  background: none;
+}

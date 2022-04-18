@@ -1,0 +1,10 @@
+.all-clients-container{
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+label{
+  color: #000000cc;
+  font-weight: 600;
+}

@@ -1,0 +1,265 @@
+
+.sub--menu-bg{
+  background: #055669;
+    color: white;
+    height: 100vh;
+    width: 225px;
+    position: fixed;
+    left: 227px;
+    top: 0;
+    z-index: 99;
+    -webkit-box-shadow: 3px 0px 14px 0px rgba(50, 50, 50, 0.58);
+    -moz-box-shadow:    3px 0px 14px 0px rgba(50, 50, 50, 0.58);
+    box-shadow:         3px 0px 14px 0px rgba(50, 50, 50, 0.58);
+}
+
+.accord--bg{
+    background: #055669;
+    color: white;
+}
+.left--menu{
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 15px;
+    list-style: none;
+    cursor: pointer;
+}
+
+.dp__container{
+  display: inline-block;
+  width: 44px;
+}
+
+.save--btn{
+  font-size: 10px;
+  font-weight: bolder;
+}
+
+.title{
+  font-size: 20px;
+  font-weight: bolder;
+  color: black;;
+}
+
+.logout{
+  width: 33px;
+  display: inline-block;
+}
+.wrapper {
+    display: flex;
+    width: 100%;
+}
+
+#sidebar {
+    /* width: 250px; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    color: #fff;
+    background: #194A00;
+    transition: all 0.3s;
+}
+
+.toggle__btn{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    display: block;
+    background: #142a08;
+    border-radius: 50%;
+    top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    transition: all 0.3s;
+    z-index: 1;
+}
+
+.newClientBg{
+  background: #194A00;
+  border-radius: 4px;
+  color: white;
+}
+
+.scale-up-hor-left {
+	-webkit-animation: scale-up-hor-left 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  animation: scale-up-hor-left 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+/**
+ * ----------------------------------------
+ * animation scale-up-hor-left
+ * ----------------------------------------
+ */
+@-webkit-keyframes scale-up-hor-left {
+  0% {
+    -webkit-transform: scaleX(0.4);
+            transform: scaleX(0.4);
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+  }
+  100% {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+  }
+}
+@keyframes scale-up-hor-left {
+  0% {
+    -webkit-transform: scaleX(0.4);
+            transform: scaleX(0.4);
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+  }
+  100% {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+  }
+}
+
+.menu{
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 228px;
+    padding-top: 60px;
+    transform: translateX(-250px);
+    color: #fff;
+    background: #194A00;
+    transition: all 0.3s;
+}
+.logo a{
+    padding: 15px 25px;
+    font-size: 40px;
+    text-transform: uppercase;
+    color: white;
+    /*margin-left: 5px*/
+}
+.logo a img{
+    max-width:140px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+ul li{
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    transition: 0.3s;
+    /*text-align: center;*/
+    padding-left: 25px;
+}
+ul li:hover{
+    padding-left: 35px;
+    background-color: #445665;
+}
+ul li a{
+    display: block;
+    color: #fff;
+    padding: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+#open{
+    display: none;
+}
+.open{
+    height: 80px;
+    width: 80px;
+    /*position: absolute;*/
+    /*background-color: #000;*/
+}
+.open i{
+    font-size: 25px;
+    cursor: pointer;
+    margin-left: -20px;
+    margin-top: 25px;
+    background-color: #194a00;
+    color: white;
+    z-index: 99;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 2px;
+}
+#open:checked ~ .menu{
+    transition: 0.5s;
+    transform: translateX(0);
+}
+#open:checked ~ .open i{
+    transition: 0.5s;
+    margin-left: 206px;
+    position: absolute;
+}
+
+
+#parent-section{
+  transition: all 0.3s;
+  /* padding: 20px 20px 20px 113px; */
+  height: 100vh;
+  background-repeat:no-repeat;
+  background-size:cover;
+}
+
+.all-clients-container{
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.border-bottom{
+  border-bottom: 1px #8a8a8a4d solid;
+}
+
+.date{
+  font-weight: 800;
+  margin-left: 50px;
+  color: black;
+}
+
+
+
+
+
+
+.sidenav {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 256px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background: #194A00; /* Black */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+  color: white;
+}
+
+/* The navigation menu links */
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+/* Style page content */
+.main {
+  margin-left: 160px; /* Same as the width of the sidebar */
+  /* padding: 0px 10px; */
+
+}

@@ -1,0 +1,51 @@
+.card-wrapper1{
+    background: url('/assets/dashboard_bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 50px;
+        justify-content: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.w-700{
+  font-weight: 700;
+}
+
+.chart--background{
+  background: rgba(255, 255, 255, 0.86);
+  border-radius: 77px;
+}
+
+.matric--info{
+  /* background: rgba(249, 13, 13, 0.72); */
+    color: white;
+    padding: 8px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.card-wrapper{
+    background: url('/assets/dashboard_bg_.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 50px;
+        justify-content: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.status{
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 5px;
+  border-radius: 13px;
+}

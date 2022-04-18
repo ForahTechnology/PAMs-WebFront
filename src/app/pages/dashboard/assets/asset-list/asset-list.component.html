@@ -1,0 +1,296 @@
+<app-ui-preloader [display]="isLoadingOrders"></app-ui-preloader>
+<section *ngIf="!isLoadingOrders">
+  <div class="row mb-4 justify-content-between">
+    <div class="col-md-2">
+      <span style=" font-weight: bolder; font-size: 20px;">Order List</span>
+    </div>
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-outline-success" id="dropdownBasic1" ngbDropdownToggle>{{label}}</button>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem (click)="switchTab('Equipment')">Equipment </button>
+        <button ngbDropdownItem (click)="switchTab('Stock')">Stock</button>
+      </div>
+    </div>
+    <div class="col-md-5 d-flex align-items-center" style=" font-weight: bolder; font-size: 14px;">
+      <div class="mr-4 p-relative">
+        <img src="assets/search.svg" class="search-icon" alt="">
+        <input class="form-control" type="text">
+      </div>
+      <div class="mr-4">
+        <img src="assets/sort.svg" alt="">
+        <span>
+          Sort
+        </span>
+      </div>
+      <div class="mr-4">
+        <img src="assets/filter.svg" alt="">
+        <span>
+          Filter
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+<section *ngIf="selectedTab == 'Equipment'">
+  <h6>Equipemnt Order history.</h6>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Purchase Date</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of allEquipementOrdered">
+        <td>{{item.equipmentName}}</td>
+        <td>{{item.quantity}}</td>
+        <td>{{item.purchaseDate}}</td>
+        <td>
+          <button class="btn btn-secondary mr-3"
+            (click)="getSignleEquipmentOrder(item.id, equipmentOrderDetails)">View</button>
+          <button class="btn btn-danger" (click)="openModal(equipmentOrderDetails, item.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+<section *ngIf="selectedTab == 'Stock'">
+
+  <h6>Stock order history.</h6>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Available</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of allStockOrdered">
+        <td>{{item.itemName}}</td>
+        <td>{{item.quantity}}</td>
+        <td>{{item.quantityLeft}}</td>
+        <td>
+          <button class="btn btn-secondary mr-3" (click)="getSingleStockOrder(item.id, stockOrderDetails)">View</button>
+          <button class="btn btn-danger" (click)="openModal(deletStockOrderDetails, item.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<ng-template #equipmentOrderDetails let-modal>
+  <app-ui-preloader [display]="isGettingSingleOrder"></app-ui-preloader>
+  <ng-container *ngIf="!isGettingSingleOrder">
+    <div class="modal-header">
+      <h4 class="modal-title">Order Details</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>
+              <h6>Equipment Name:</h6>
+            </td>
+            <td>{{singleEquipmentOrder.equipmentName}}</td>
+          </tr>
+          <tr>
+            <td>Condition:</td>
+            <td>{{singleEquipmentOrder.condition}}</td>
+          </tr>
+          <tr>
+            <td>Description:</td>
+            <td>{{singleEquipmentOrder.description}}</td>
+          </tr>
+          <tr>
+            <td>Discountinued:</td>
+            <td>{{singleEquipmentOrder.discountinued}}</td>
+          </tr>
+          <tr>
+            <td>Id Tag:</td>
+            <td>{{singleEquipmentOrder.idTag}}</td>
+          </tr>
+          <tr>
+            <td>Location:</td>
+            <td>{{singleEquipmentOrder.location}}</td>
+          </tr>
+          <tr>
+            <td>Model Number:</td>
+            <td>{{singleEquipmentOrder.modelNumber}}</td>
+          </tr>
+          <tr>
+            <td>Photo Link:</td>
+            <td>{{singleEquipmentOrder.photoLink}}</td>
+          </tr>
+          <tr>
+            <td>Price:</td>
+            <td>{{singleEquipmentOrder.price}}</td>
+          </tr>
+          <tr>
+            <td>Purchase Date:</td>
+            <td>{{singleEquipmentOrder.purchaseDate | date}}</td>
+          </tr>
+          <tr>
+            <td>Quantity:</td>
+            <td>{{singleEquipmentOrder.quantity}}</td>
+          </tr>
+          <tr>
+            <td>Serial Number:</td>
+            <td>{{singleEquipmentOrder.serialNumber}}</td>
+          </tr>
+          <tr>
+            <td>Supplier:</td>
+            <td>{{singleEquipmentOrder.supplier}}</td>
+          </tr>
+          <tr>
+            <td>Unit Price:</td>
+            <td>{{singleEquipmentOrder.unitPrice}}</td>
+          </tr>
+          <tr>
+            <td>Warranty Expiration:</td>
+            <td>{{singleEquipmentOrder.warrantyExpiration}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger"
+        (click)="openModal(deleteEquipmentOrder, singleEquipmentOrder.id)">Delete</button>
+      <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-container>
+</ng-template>
+
+<ng-template #deleteEquipmentOrder let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Confirm Delete</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete this item?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="equipmentOrderDelete()">
+      <span class="spinner-border spinner-border-sm text-white text-center mr-2" role="status" *ngIf="isDeleting">
+        <span class="sr-only">Loading...</span>
+      </span>
+      Yes</button>
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">No</button>
+  </div>
+</ng-template>
+
+<ng-template #stockOrderDetails let-modal>
+  <app-ui-preloader [display]="isGettingSingleOrder" ></app-ui-preloader>
+  <ng-container *ngIf="!isGettingSingleOrder">
+    <div class="modal-header">
+      <h4 class="modal-title">Order Details</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>
+              <h6>Item Name:</h6>
+            </td>
+            <td>{{singleStockOrder.itemName}}</td>
+          </tr>
+          <tr>
+            <td>Item Number:</td>
+            <td>{{singleStockOrder.itemNumber}}</td>
+          </tr>
+          <tr>
+            <td>Quantity:</td>
+            <td>{{singleStockOrder.quantity}}</td>
+          </tr>
+          <tr>
+            <td>Quantity Left:</td>
+            <td>{{singleStockOrder.quantityLeft}}</td>
+          </tr>
+          <tr>
+            <td>Quantity Used:</td>
+            <td>{{singleStockOrder.quantityUsed}}</td>
+          </tr>
+
+          <tr>
+            <td>Discountinued:</td>
+            <td>{{singleStockOrder.itemDiscontinued}}</td>
+          </tr>
+          <tr>
+            <td>Date Of Last Order:</td>
+            <td>{{singleStockOrder.dateOfLastOrder | date}}</td>
+          </tr>
+          <tr>
+            <td>Location:</td>
+            <td>{{singleStockOrder.location}}</td>
+          </tr>
+          <tr>
+            <td>Expiry Date:</td>
+            <td>{{singleStockOrder.expiryDate | date}}</td>
+          </tr>
+
+          <tr>
+            <td>Reorder Level:</td>
+            <td>{{singleStockOrder.reorderLevel}}</td>
+          </tr>
+          <tr>
+            <td>Stock Quantity:</td>
+            <td>{{singleStockOrder.stockQty}}</td>
+          </tr>
+          <tr>
+            <td>Total Value:</td>
+            <td>{{singleStockOrder.totalValue}}</td>
+          </tr>
+          <tr>
+            <td>Unit Cost:</td>
+            <td>{{singleStockOrder.unitCost}}</td>
+          </tr>
+          <tr>
+            <td>Unit Price:</td>
+            <td>{{singleStockOrder.unitPrice}}</td>
+          </tr>
+          <tr>
+            <td>Weight:</td>
+            <td>{{singleStockOrder.weight}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="openModal(deletStockOrderDetails, singleStockOrder.id)">Delete</button>
+      <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-container>
+</ng-template>
+
+ <ng-template #deletStockOrderDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Order Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete this item?</p>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deleteSingleStockOrder()">
+        <span class="spinner-border spinner-border-sm text-white text-center mr-2" role="status" *ngIf="isDeleting">
+          <span class="sr-only">Loading...</span>
+        </span>
+        Yes</button>
+      <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">No</button>
+  </div>
+</ng-template>

@@ -1,0 +1,99 @@
+<ng-container *ngIf="authenticatedUser.role == 'SuperAdmin'">
+  <section class="all-clients-container">
+    <div class="row mb-4 justify-content-between">
+      <div class="col-md-2">
+        <span style=" font-weight: bolder; font-size: 20px;">Add Users</span>
+      </div>
+      <div class="col-9 d-flex align-items-center justify-content-end" style=" font-weight: bolder; font-size: 14px;">
+        <div>
+          <form class="d-flex mr-3" [formGroup]="addNewUserForm">
+            <div class="form-row">
+              <div class="col-8">
+                <input type="text" formControlName="email" class="form-control" >
+              </div>
+              <div class="col">
+                <button (click)="submitNewUserData()" [disabled]="addNewUserForm.invalid" class="btn btn-primary" >
+                  <div *ngIf="isProcessing" class="spinner-border text-light spinner-border-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  send code</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="mr-4 p-relative">
+          <img src="assets/search.svg" class="search-icon" alt="">
+          <input class="form-control" type="text">
+        </div>
+        <div class="mr-4">
+          <img src="assets/sort.svg" alt="">
+          <span>
+            Sort
+          </span>
+        </div>
+        <div class="mr-4">
+          <img src="assets/filter.svg" alt="">
+          <span>
+            Filter
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row border-bottom mb-3">
+      <div class="col">Name</div>
+      <div class="col">Registration Date</div>
+      <div class="col-1">Role</div>
+      <div class="col-1">Status</div>
+      <div class="col text-center">Action</div>
+    </div>
+    <div class="row py-3 border-bottom" *ngFor="let user of allUsers">
+      <div class="col">
+        <span style="font-weight: 600;">
+          {{user.name}}
+        </span>
+      </div>
+      <div class="col" style="font-weight: 600;">
+        <span style="font-weight: 600;">{{user.registrationDate}}</span>
+      </div>
+      <div class="col-1" style="font-weight: 600;">{{user.role}}</div>
+      <div class="col-1" style="font-weight: 600;">{{user.status}}</div>
+      <div class="col text-center">
+        <div class="d-inline-block text-center mr-3 action__btn--text" (click)="changeStaffRole(user.userId, '4ed397f0-c64a-484c-8289-7238eefcc233', 'promote')" >
+           <img *ngIf="actionType == '' || actionType == 'demote' " src="assets/promote.svg" alt="">
+          <div *ngIf="actionType == 'promote'" class="spinner-border text-primary spinner-border-sm" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+            <span  class="d-block" >Promote</span>
+         </div>
+        <!-- <div *ngIf="authenticatedUser.role[0] === 'SuperAdmin'"  class="d-inline-block text-center mr-3 action__btn--text"> <img src="assets/promote.svg" style="transform: rotate(180deg)" alt=""> <span  class="d-block" >Demote</span> </div> -->
+        <div (click)="changeStaffRole(user.userId, '71bc84a4-0ca5-45cd-b749-b868fff09417', 'demote')" class="d-inline-block text-center mr-3 action__btn--text">
+          <div *ngIf="actionType == 'demote' && user.userId == userId" class="spinner-border text-primary spinner-border-sm" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <img *ngIf="actionType == '' || actionType == 'promote'" src="assets/reset.svg" alt="" >
+          <span  class="d-block">Reset</span>
+        </div>
+        <div *ngIf="user.status == 'Active'" (click)="deactivateUser(user.userId)" class="d-inline-block text-center mr-3 action__btn--text">
+           <img *ngIf="!isLoading" src="assets/cancel.svg" alt=""  >
+           <div *ngIf="isLoading && user.userId == userId" class="spinner-border text-primary spinner-border-sm" role="status">
+             <span class="sr-only">Loading...</span>
+           </div>
+           <span  class="d-block">
+             Deactivate</span>
+           </div>
+
+        <div *ngIf="user.status == 'Disabled'" (click)="activateUser(user.userId)" class="d-inline-block text-center mr-3 action__btn--text">
+          <!-- <img *ngIf="!isLoading" src="assets/cancel.svg" alt=""> -->
+          <i *ngIf="!isLoading" class="bi bi-check-circle"></i>
+          <div *ngIf="isLoading && user.userId == userId" class="spinner-border text-primary spinner-border-sm" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <span class="d-block">
+            Activate</span>
+        </div>
+        <!-- <div  class="d-inline-block text-center mr-3 action__btn--text" (click)="activateUser(user.userId)"> <i class="bi bi-check-circle"></i> <span  class="d-block">Activate</span> </div> -->
+      </div>
+    </div>
+  </section>
+</ng-container>

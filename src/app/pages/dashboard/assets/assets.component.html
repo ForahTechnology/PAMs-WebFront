@@ -1,0 +1,267 @@
+
+<app-ui-preloader [display]="isLoadingOrders"></app-ui-preloader>
+<ng-container *ngIf="!isLoadingOrders && !activeRoute" >
+  <h4>Add New Equipment</h4>
+  <section  style="background: #194A00; color: white;" class="py-5 col-10">
+    <form [formGroup]="productForm">
+      <div class="row justify-content-around">
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Product Name
+            </label>
+          </div>
+          <input formControlName="equipmentName" class="form-control" type="text">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Quantity
+            </label>
+          </div>
+          <input formControlName="quantity" class="form-control" type="number">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Description
+            </label>
+          </div>
+          <input formControlName="description" class="form-control" type="text">
+        </div>
+
+
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Price
+            </label>
+          </div>
+          <input formControlName="price" class="form-control" type="number">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Id Tag
+            </label>
+          </div>
+          <input formControlName="idTag" class="form-control" type="text">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Unit Price
+            </label>
+          </div>
+          <input formControlName="unitPrice" class="form-control" type="number">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Location
+            </label>
+          </div>
+          <input formControlName="location" class="form-control" type="text">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Supplier
+            </label>
+          </div>
+          <input formControlName="supplier" class="form-control" type="text">
+        </div>
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Purchase Date <span class="text-danger">*</span>
+            </label>
+          </div>
+          <input formControlName="purchaseDate" class="form-control" type="date">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Warranty Expiration <span class="text-danger">*</span>
+            </label>
+          </div>
+          <input formControlName="warrantyExpiration" class="form-control" type="date">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Condition
+            </label>
+          </div>
+          <input formControlName="condition" class="form-control" type="text">
+        </div>
+
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Model Number
+            </label>
+          </div>
+          <input formControlName="modelNumber" class="form-control" type="text">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Serial Number
+            </label>
+          </div>
+          <input formControlName="serialNumber" class="form-control" type="text">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Photo Link
+            </label>
+          </div>
+          <input formControlName="photoLink" class="form-control" type="text">
+        </div>
+        <div class="col-5">
+          <!-- <input [(ngModel)]="isChecked" type="checkbox" (change)="toggleChecked()" formControlName="discountinued"
+            [checked]="isChecked"> -->
+            <input id="discountinued" [checked]="isChecked" (change)="isChecked = !isChecked " type="checkbox" formControlName="discountinued">
+            <label for="discountinued" (click)="toggleChecked()"> Discountinued</label>
+        </div>
+
+        <div class="col-5">
+          <button type="submit" [disabled]="productForm.invalid"  (click)="submitProductDetails()" class="btn btn-secondary">
+            <span class="spinner-border spinner-border-sm text-white text-center mr-2" role="status" *ngIf="isLoading">
+              <span class="sr-only">Loading...</span>
+            </span>Save Changes</button>
+        </div>
+
+      </div>
+    </form>
+  </section>
+</ng-container>
+
+<ng-container *ngIf="!isLoadingOrders && activeRoute == 'stock'" >
+  <h4>Add New Stock Item</h4>
+  <section style="background: #194A00; color: white;" class="py-5 col-10">
+    <form [formGroup]="otherInventoryForm">
+      <div class="row justify-content-around">
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Item Name
+            </label>
+          </div>
+          <input formControlName="itemName" class="form-control" type="text">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Item Number
+            </label>
+          </div>
+          <input formControlName="itemNumber" class="form-control" type="number">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Quantity
+            </label>
+          </div>
+          <input formControlName="quantity" class="form-control" type="number">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Unit Cost <span class="text-danger">*</span>
+            </label>
+          </div>
+          <input formControlName="unitCost" class="form-control" type="number">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Weight
+            </label>
+          </div>
+          <input formControlName="weight" class="form-control" type="text">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Stock Quantity <span class="text-danger">*</span>
+            </label>
+          </div>
+          <input formControlName="stockQty" class="form-control" type="number">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Location <span class="text-danger">*</span>
+            </label>
+          </div>
+          <ng-select [items]="locations" bindLabel="name" bindValue="value" formControlName="location" >
+          </ng-select>
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Total Value <span class="text-danger">*</span>
+            </label>
+          </div>
+          <input formControlName="totalValue" class="form-control" type="number">
+        </div>
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Date of Last Order <span class="text-danger">*</span>
+            </label>
+          </div>
+          <input formControlName="dateOfLastOrder" class="form-control" type="date">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Expiring Date<span class="text-danger">*</span>
+            </label>
+          </div>
+          <input formControlName="expiryDate" class="form-control" type="date">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Reorder Level
+            </label>
+          </div>
+          <input formControlName="reorderLevel" class="form-control" type="text">
+        </div>
+
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Quantity Used <span class="text-danger">*</span>
+            </label>
+          </div>
+          <input formControlName="quantityUsed" class="form-control" type="number">
+        </div>
+
+        <div class="mt-1 mb-4 col-md-5">
+          <div class="d-flex">
+            <label>Quantity Left <span class="text-danger">*</span>
+            </label>
+          </div>
+          <input formControlName="quantityLeft" class="form-control" type="number">
+        </div>
+
+        <div class="col-5">
+          <input id="itemDiscontinued" [checked]="isChecked" (change)="isChecked = !isChecked " type="checkbox"
+            formControlName="itemDiscontinued">
+          <label for="itemDiscontinued" (click)="toggleChecked()">    Item Discontinued <span class="text-danger">*</span></label>
+        </div>
+
+        <div class="col-5">
+          <button type="submit" [disabled]="otherInventoryForm.invalid" (click)="submitOtherProductDetails()" class="btn btn-secondary">
+            <span class="spinner-border spinner-border-sm text-white text-center mr-2" role="status" *ngIf="isLoading">
+              <span class="sr-only">Loading...</span>
+            </span>Save Changes</button>
+        </div>
+
+      </div>
+    </form>
+  </section>
+</ng-container>
+

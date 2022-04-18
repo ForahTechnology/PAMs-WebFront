@@ -1,0 +1,159 @@
+  <section class="d-flex row">
+    <div class="col-md-6 align-self-center text-center">
+      <div>
+        <img src="assets/logo.svg" alt="seth logo">
+      </div>
+    </div>
+    <div class="col-md-6 auth--form">
+
+      <div *ngIf="!resetPassword"  class="col-9 d-flex flex-column justify-content-center">
+        <h3>Staff Login</h3>
+        <div>
+          <button (click)="isSignin = false" [ngClass]="{'none__bg--border-active': !isSignin}" class="shadow-none none__bg--border">Registration</button>
+          <button (click)="isSignin = true" [ngClass]="{'none__bg--border-active': isSignin}" class="shadow-none none__bg--border">Sign in</button>
+        </div>
+        <ng-container *ngIf="!isSignin">
+          <form [formGroup]="registration" (ngSubmit)="completeRegistraion()">
+            <!-- <div class="row"> -->
+
+              <div class="mt-1">
+                  <div class="d-flex">
+                    <label>Firstname<span class="text-danger">*</span>
+                    </label>
+                  </div>
+                  <input formControlName="firstName"  class="form-control form-control-sm" type="text">
+              </div>
+              <div class="mt-1">
+                  <div class="d-flex">
+                    <label>Lastname<span class="text-danger">*</span>
+                    </label>
+                  </div>
+                  <input formControlName="lastName" class="form-control form-control-sm" type="text">
+              </div>
+              <div class="mt-1">
+                  <div class="d-flex">
+                    <label>Email<span class="text-danger">*</span>
+                    </label>
+                  </div>
+                  <input formControlName="email" class="form-control form-control-sm" type="email">
+              </div>
+              <div class="mt-1">
+                  <div class="d-flex">
+                    <label>Password<span class="text-danger">*</span>
+                      <span class="password-hint">Password should contain number, alphabets amd special character.</span>
+                    </label>
+                  </div>
+                  <input formControlName="password" class="form-control form-control-sm" type="password">
+              </div>
+              <div class="mt-1">
+                <div class="d-flex">
+                  <label>Confirm Password<span class="text-danger">*</span>
+                  </label>
+                </div>
+                <input (keyup)="confirmPassword()" formControlName="confirmPassword" class="form-control form-control-sm" type="password">
+                <div style="color:red;"
+                  *ngIf="notValue">
+                  Passwords does not match
+                </div>
+              </div>
+              <div class="mt-1">
+                  <div class="d-flex">
+                    <label>Phone Number<span class="text-danger">*</span>
+                    </label>
+                  </div>
+                  <input formControlName="phoneNumber" class="form-control form-control-sm" type="number">
+              </div>
+              <div class="mt-1">
+                  <div class="d-flex">
+                    <label>Activation Code<span class="text-danger">*</span>
+                    </label>
+                  </div>
+                  <input formControlName="activationCode" class="form-control form-control-sm" type="text">
+              </div>
+              <div class="mt-2">
+                <span style="color:red;">{{message}}</span>
+              </div>
+              <div>
+                <button class="btn mt-4 mb-5 btn-primary" [disabled]="registration.invalid" >
+                  <span class="spinner-border spinner-border-sm text-white text-center mr-2" role="status"
+                    *ngIf="isLoading">
+                    <span class="sr-only">Loading...</span>
+                  </span>
+                  Signup
+                </button>
+              </div>
+            <!-- </div> -->
+          </form>
+        </ng-container>
+        <ng-container *ngIf="isSignin">
+          <form [formGroup]="signinForm" (ngSubmit)="signin()">
+            <div class="mt-1">
+              <div class="d-flex">
+                <label>Email<span class="text-danger">*</span>
+                </label>
+              </div>
+              <input formControlName="email" class="form-control form-control-sm" type="email">
+            </div>
+            <div class="mt-1">
+              <div class="d-flex">
+                <label>Password<span class="text-danger">*</span>
+                </label>
+              </div>
+              <input formControlName="password" class="form-control form-control-sm" type="password">
+            </div>
+
+            <div>
+              <button class="btn mt-4 btn-primary" [disabled]="signinForm.invalid">
+                <span class="spinner-border spinner-border-sm text-white text-center mr-2" role="status" *ngIf="isLoading">
+                  <span class="sr-only">Loading...</span>
+                </span>
+                Signin
+              </button>
+
+              <button (click)="resetPassword = !resetPassword"  class="btn ml-4 mt-4">
+                Forgot Password
+              </button>
+            </div>
+            <!-- </div> -->
+          </form>
+        </ng-container>
+      </div>
+
+      <div *ngIf="resetPassword" class="col-9 d-flex flex-column justify-content-center">
+        <h3>Reset Password</h3>
+        <!-- <div>
+          <button (click)="isSignin = false" [ngClass]="{'none__bg--border-active': !isSignin}"
+            class="shadow-none none__bg--border">Registration</button>
+          <button (click)="isSignin = true" [ngClass]="{'none__bg--border-active': isSignin}"
+            class="shadow-none none__bg--border">Sign in</button>
+        </div> -->
+        <ng-container >
+          <form [formGroup]="passwordRestForm" (ngSubmit)="submitResetPassword()">
+
+            <div class="mt-1">
+              <div class="d-flex">
+                <label>Email<span class="text-danger">*</span>
+                </label>
+              </div>
+              <input formControlName="email" class="form-control form-control-sm" type="email">
+            </div>
+            <div class="mt-3">
+              <span style="color: red; font-weight: 600;">{{resetMessage}}</span>
+            </div>
+            <div>
+              <button class="btn mt-4 btn-primary" [disabled]="passwordRestForm.invalid">
+                <span class="spinner-border spinner-border-sm text-white text-center mr-2" role="status" *ngIf="isLoading">
+                  <span class="sr-only">Loading...</span>
+                </span>
+                Submit
+              </button>
+
+              <button (click)="resetPassword = !resetPassword" class="btn ml-4 mt-4">
+                Signin
+              </button>
+            </div>
+          </form>
+        </ng-container>
+      </div>
+    </div>
+  </section>

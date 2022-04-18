@@ -1,0 +1,279 @@
+<app-ui-preloader [display]="isLoading"></app-ui-preloader>
+
+<ng-container *ngIf="!isLoading && !isLabSamples">
+  <section class="all-clients-container">
+    <div class="row mb-4 justify-content-between">
+      <div class="col-md-2">
+        <span style=" font-weight: bolder; font-size: 20px;">Clients List</span>
+      </div>
+      <div class="col-md-5 d-flex align-items-center" style=" font-weight: bolder; font-size: 14px;">
+        <div class="mr-4 p-relative">
+          <!-- <img src="assets/search.svg" class="search-icon" alt=""> -->
+          <!-- <app-search-bar [searchArray]="allClients" (searchResult)="getAllClientSearch($event)" ></app-search-bar> -->
+          <input class="form-control" placeholder="search..." [(ngModel)]="searchKeywords" [ngModelOptions]="{standalone: true}" (input)="getSearchKeywords()" type="text">
+        </div>
+        <div class="mr-4">
+          <img src="assets/sort.svg" alt="">
+          <span>
+            Sort
+          </span>
+        </div>
+        <div class="mr-4">
+          <img src="assets/filter.svg" alt="">
+          <span>
+            Filter
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row border-bottom mb-3">
+      <div class="col">Client</div>
+      <div class="col">Email Address</div>
+      <div class="col">Contact Person</div>
+      <div class="col"></div>
+    </div>
+    <div class="row py-3 border-bottom" *ngFor="let client of allClients; let i = index">
+      <div class="col">
+        <span class="client-name">
+          {{client.name}}
+        </span>
+        <span style="font-size: 14px;">{{client.address}}</span>
+      </div>
+      <div class="col" >{{client.email}}</div>
+      <div class="col"></div>
+      <div class="col">
+        <button (click)="getSamplesForCient(client.id, i)" class="btn btn-primary">
+          <span class="spinner-border spinner-border-sm text-white text-center mr-2" role="status" *ngIf="i == index">
+            <span class="sr-only">Loading...</span>
+          </span>
+          Lab Samples</button>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize" (pageChange)="getAllClients($event)"
+        [collectionSize]="totalCollection"></ngb-pagination>
+    </div>
+  </section>
+</ng-container>
+
+
+<ng-container *ngIf="isLabSamples">
+  <section class="all-clients-container">
+    <div class="row mb-4 justify-content-between">
+      <div class="col-md-2">
+        <span style=" font-weight: bolder; font-size: 20px;">Lab Samples</span>
+      </div>
+      <div class="col-md-5 d-flex align-items-center" style=" font-weight: bolder; font-size: 14px;">
+        <div class="mr-4 p-relative">
+          <img src="assets/search.svg" class="search-icon" alt="">
+          <input class="form-control" type="text" >
+        </div>
+        <div class="mr-4">
+          <img src="assets/sort.svg" alt="">
+          <span>
+            Sort
+          </span>
+        </div>
+        <div class="mr-4">
+          <img src="assets/filter.svg" alt="">
+          <span>
+            Filter
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row border-bottom mb-3">
+      <div class="col">Client Name</div>
+      <div class="col">Staff Name</div>
+      <div class="col">Sampling Date</div>
+      <div class="col">Action</div>
+    </div>
+    <div class="row py-3 border-bottom" *ngFor="let sample of allSamples; let i = index">
+      <div class="col">
+        <span class="client-name">
+          {{sample.clientName}}
+        </span>
+        <span style="font-size: 14px;"></span>
+      </div>
+      <div class="col">{{sample.staffName}}</div>
+      <div class="col" style="font-weight: 600;">{{sample.samplingDate}}</div>
+      <div class="col-3" style="font-weight: 600;">
+        <button *ngIf="!sample['isReportCreated']" (click)="openModal(reportCertificate, sample.id)" class="btn btn-primary">Create Certificate</button>
+        <button  *ngIf="sample['isReportCreated']" (click)="getSingleReportById(sample.id, i)" class=" d-inline-block ml-3 btn btn-secondary">
+          <span class="spinner-border spinner-border-sm text-white text-center mr-2" role="status" *ngIf="i == viewIndex">
+            <span class="sr-only">Loading...</span>
+          </span>
+          <span *ngIf="i !== viewIndex">
+            View Certificate
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="allSamples.length == 0">
+      <div class="col">
+        <p>No samples created yet.</p>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <!-- <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize" (pageChange)="getAllClients($event)"
+        [collectionSize]="totalCollection"></ngb-pagination> -->
+    </div>
+  </section>
+</ng-container>
+
+
+<ng-template #reportCertificate let-modal>
+  <ng-container>
+    <div class="modal-header">
+      <h4 class="modal-title">Create Certificate</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="createCertificateForm">
+        <div class="row justify-content-around">
+          <div class="mt-1 mb-4 col-5">
+            <div class="d-flex">
+              <label>Sample Ref No.
+              </label>
+            </div>
+            <input formControlName="lab_Sample_Ref_Number" class="form-control" type="text">
+          </div>
+
+          <div class="mt-1 mb-4 col-5">
+            <div class="d-flex">
+              <label>Certificate No.
+              </label>
+            </div>
+            <input formControlName="certificate_Number" class="form-control" type="text">
+          </div>
+
+          <div class="mt-1 mb-4 col-5">
+            <div class="d-flex">
+              <label>Sample Label
+              </label>
+            </div>
+            <input formControlName="sample_Label" class="form-control" type="text">
+          </div>
+
+          <div class="mt-1 mb-4 col-5">
+            <div class="d-flex">
+              <label>Date Received <span style="color: red;">*</span>
+              </label>
+            </div>
+            <input formControlName="date_Recieved_In_Lab" class="form-control" type="date">
+          </div>
+          <div class="mt-1 mb-4 col-5">
+            <div class="d-flex">
+              <label>Date Analysed <span style="color: red;">*</span>
+              </label>
+            </div>
+            <input formControlName="date_Analysed_In_Lab" class="form-control" type="date">
+          </div>
+
+          <div class="mt-1 mb-4 col-5">
+            <div class="d-flex">
+              <label>Humidit
+              </label>
+            </div>
+            <input formControlName="humidity" class="form-control" type="text">
+          </div>
+
+
+          <div class="mt-1 mb-4 col-5">
+            <div class="d-flex">
+              <label>Temperature
+              </label>
+            </div>
+            <input formControlName="temperature" class="form-control" type="text">
+          </div>
+
+          <div class="mt-1 mb-4 col-5">
+            <div class="d-flex">
+              <label>Sample Type
+              </label>
+            </div>
+            <input formControlName="sample_Type" class="form-control" type="text">
+          </div>
+
+          <div class="mt-1 mb-4 col-5">
+            <div class="d-flex">
+              <label>Batch No.
+              </label>
+            </div>
+            <input formControlName="batch_Number" class="form-control" type="text">
+          </div>
+
+          <div class="mt-1 mb-4 col-5">
+            <div class="d-flex">
+              <label>Lab Analyst
+              </label>
+            </div>
+            <input formControlName="lab_Analyst" class="form-control" type="text">
+          </div>
+
+          <div class="mt-1 mb-4 col-12">
+            <div class="d-flex">
+              <label>Comment
+              </label>
+            </div>
+            <input formControlName="comment" class="form-control" type="text">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button [disabled]="createCertificateForm.invalid" (click)="createSampleReportCertificate()" class="btn btn-success">
+        <span class="spinner-border spinner-border-sm text-white text-center mr-2" role="status"
+          *ngIf="isCreatingReport">
+          <span class="sr-only">Loading...</span>
+        </span>
+        Submit
+      </button>
+    </div>
+  </ng-container>
+</ng-template>
+
+
+<ng-template #downloadReportCertificate let-modal>
+  <ng-container>
+    <div class="modal-header">
+      <h4 class="modal-title">All Client's Report</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row border-bottom mb-3">
+        <div class="col-3">Location</div>
+        <div class="col-3">Analysed</div>
+        <div class="col-3">Received</div>
+        <div class="col"></div>
+      </div>
+      <div class="row mb-3"  style="border-bottom:1px solid #0000002e">
+        <div class="col-3">{{report.clientAddress}}</div>
+        <div class="col-3">{{report.date_Analysed_In_Lab | date:'shortDate'}}</div>
+        <div class="col-3">{{report.date_Recieved_In_Lab | date:'shortDate'}}</div>
+        <div class="col">
+          <button (click)="downloadReport(report.id)" class=" d-inline-block ml-3 btn btn-secondary">
+            <span class="spinner-border spinner-border-sm text-white text-center mr-2" role="status" *ngIf="downloadIndex">
+              <span class="sr-only">Loading...</span>
+            </span>
+            <i class="bi bi-download" *ngIf="!downloadIndex"></i></button>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="modal-footer">
+      <button [disabled]="createCertificateForm.invalid" (click)="createSampleReportCertificate()"
+        class="btn btn-success">
+        <span class="spinner-border spinner-border-sm text-white text-center mr-2" role="status"
+          *ngIf="isCreatingReport">
+          <span class="sr-only">Loading...</span>
+        </span>
+        Submit
+      </button>
+    </div> -->
+  </ng-container>
+</ng-template>

@@ -1,0 +1,74 @@
+<!-- <app-ui-preloader [display]="isLoadingOrders"></app-ui-preloader> -->
+<section class="row">
+  <!-- <div class="row">
+    <div class="col-md-4 card-wrapper1">
+      <p class="text-center" style="font-weight: 600; color: #ffffff;">Total Amount Unpaid</p>
+      <p class="text-center" style="font-weight: bolder; font-size: 35px; color: #ffffff;">NGN {{authenticatedUser['totalAmountInvoiced']}}</p>
+    </div>
+    <div class="col-3"></div>
+    <div class="col-md-4 card-wrapper" >
+      <p class="text-center" style="font-weight: 600;color: #ffffff;">Number of Custoomer</p>
+      <p class="text-center" style="font-weight: bolder;  font-size: 35px; color: #ffffff;">{{authenticatedUser['totalCustomers']}}</p>
+    </div>
+  </div> -->
+  <div class="col-12"> <h1 class="w-700" >Hello, {{firstName}}</h1> </div>
+  <div class="col-12"> <p class="w-700">Ready to start your day, what do you want to do today?</p> </div>
+</section>
+
+<section class="chart--background p-3">
+  <!-- <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Company Name</th>
+        <th scope="col">Contact Person</th>
+        <th scope="col">Amount Due</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of authenticatedUser['invoices']">
+        <td>{{item.companyName}}</td>
+        <td>{{item.contactPerson}}</td>
+        <td>{{item.amountDue}}</td>
+        <td>
+          <span class="status" [ngStyle]="{'background': item.status == 'OVERDUE' ? '#F12B2C': (item.status == 'ONTRACK' ? '#FEC400':'#29CC97')}" >{{item.status}}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table> -->
+
+  <div class="text-center py-2"> <h2 class="w-700">Weekly Analysis Summary</h2> </div>
+
+  <div  class="d-flex row mb-5">
+    <div class="mr-4 text-center col"> <span class="w-700">Field Analysis</span> </div>
+    <div class="col-md-10" *ngIf="fieldData" style="max-height: 124px; width:80%;">
+      <canvas baseChart height="13px" width="100%" [legend]="false" [colors]="chartColors" [chartType]="'line'" [datasets]="fieldData" [labels]="dataLabels">
+      </canvas>
+    </div>
+  </div>
+  <div  class="row d-flex mb-3">
+    <div class="mr-4 text-center col"> <span class="w-700">Lab Analysis</span> </div>
+    <div class="col-md-10" *ngIf="labData" style="max-height: 124px; width:80%;">
+      <canvas baseChart height="13px" width="100%" [legend]="false" [colors]="chartColors" [chartType]="'line'"
+        [datasets]="labData" [labels]="dataLabels">
+      </canvas>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end p-3">
+    <div class="mr-5"> <span class="w-700"> &nbsp;&nbsp; </span> </div>
+    <div class="row justify-content-center" style="max-height: 124px; width:80%;">
+      <div class="mr-3 col text-center">
+        <h6 style="background: rgba(249, 13, 13, 0.72);" class="matric--info">Number of Customer</h6> <span  class="w-700" style="font-size: 14px;">{{dashBoardMatrics?.numberOfClient}}</span>
+      </div>
+      <div class="mr-3 col text-center">
+        <h6 style="background: rgba(208, 188, 4, 1)" class="matric--info">Number of location</h6> <span class="w-700" style="font-size: 14px;">{{dashBoardMatrics?.numberOfLocation}}</span>
+      </div>
+      <div class="mr-3 col text-center">
+        <h6 style="background:rgba(65, 184, 6, 1);" class="matric--info">Number of Analyst</h6> <span  class="w-700" style="font-size: 14px;">{{dashBoardMatrics?.numberOfAnalyst}}</span>
+      </div>
+    </div>
+  </div>
+
+
+</section>
