@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ClientObject } from 'src/app/models/auth.model';
 import { ClientService } from 'src/app/services/client.service';
@@ -11,6 +12,9 @@ import { ClientService } from 'src/app/services/client.service';
 export class SamplingComponent implements OnInit {
   allClients: ClientObject[];
 
+  addSearchForm: FormGroup = new FormGroup({
+    name: new FormControl('', Validators.required),
+  });
 
   isLoading: boolean;
   isDownloading: boolean;
@@ -21,41 +25,46 @@ export class SamplingComponent implements OnInit {
   pageNumber = 0;
   totalCollection: number;
   searchKeywords: any;
-  constructor(private clientService : ClientService, private router: Router, private activatedRoute : ActivatedRoute) {
+  constructor(private clientService: ClientService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
         this.getAllClients(1)
         // this.getAllSamples()
         this.linkType = this.activatedRoute.snapshot.params.create;
-        this.linkType == 'create' ? null : this.getAllSelectedTest(this.linkType)
+        this.linkType == 'create' ? null : this.getAllSelectedTest(this.linkType, 1)
       }
-   })
-   }
+    })
+  }
 
   ngOnInit() {
     this.getAllClients(1)
     // this.getAllSamples()
     this.linkType = this.activatedRoute.snapshot.params.create;
-    this.linkType == 'create' ? null : this.getAllSelectedTest(this.linkType)
+    this.linkType == 'create' ? null : this.getAllSelectedTest(this.linkType, 1)
   }
 
-   getAllSelectedTest(sampleName:string) {
-     this.isLoading = true;
-      this.clientService.getAllSelectSamples(sampleName).subscribe(
+  loadPage(pageNumber) {
+    this.getAllSelectedTest(this.linkType, pageNumber)
+  }
+  
+  getAllSelectedTest(sampleName: string, pageNumber: number) {
+    this.isLoading = true;
+    this.clientService.getAllSelectSamples(sampleName, pageNumber, this.pageSize).subscribe(
       (res) => {
-        this.allSamples =  res['returnObject']['data']
-
+        this.totalCollection = res['returnObject'].total * this.pageSize
+        this.allSamples = res['returnObject']['data']
         this.isLoading = false;
       }
     )
   }
-  getSearchKeywords() {
-    console.log(this.searchKeywords, 'searchKeywords');
 
-    this.allSamples = this.allClients.filter((client:any) => client.name.toLowerCase().includes(this.searchKeywords.toLowerCase()))
+  getSearchKeywords() {
+    let payload = this.addSearchForm.value.name
+    this.allSamples = this.allSamples.filter((client: any) => client.clientName.toLowerCase().includes(payload.toLowerCase()))
+    this.addSearchForm.reset()
   }
 
-  downloadPhotos(locationId:string, sampleId:string, _param, _index) {
+  downloadPhotos(locationId: string, sampleId: string, _param, _index) {
     this.index = _index;
 
     this.isDownloading = true;
@@ -83,14 +92,14 @@ export class SamplingComponent implements OnInit {
   }
 
   exportToExcel(ImageBase64) {
-       const link = document.createElement('a');
-       link.download = `Report as at ${new Date().toLocaleString()}.xlsx`;
-       link.href = 'data:image/png;base64,' + ImageBase64;
-       link.click();
+    const link = document.createElement('a');
+    link.download = `Report as at ${new Date().toLocaleString()}.xlsx`;
+    link.href = 'data:image/png;base64,' + ImageBase64;
+    link.click();
   }
 
 
-  downloadResult(locationId:string, sampleId:string, _param, _index) {
+  downloadResult(locationId: string, sampleId: string, _param, _index) {
     this.isDownloading = true;
     this.index = _index;
 
@@ -144,7 +153,7 @@ export class SamplingComponent implements OnInit {
 
   getAllSupplies() {
     this.clientService.getAllSupplies().subscribe(
-      (res) =>{
+      (res) => {
 
 
       }, (err) => {

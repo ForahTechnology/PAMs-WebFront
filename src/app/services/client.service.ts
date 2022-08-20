@@ -50,9 +50,8 @@ export class ClientService {
     return this.http.post(`${environment.baseUrl}/Client/CreateClient`, payload)
   }
 
-
-  getAllSelectSamples(sampleName) {
-    return this.http.get(`${environment.baseUrl}/FieldScientistAnalysis${sampleName}/GetAll${sampleName}SubmittedTest`)
+  getAllSelectSamples(sampleName: string, pageNumber: number, pageSize: number) {
+    return this.http.get(`${environment.baseUrl}/FieldScientistAnalysis${sampleName}/GetAll${sampleName}SubmittedTest?pageSize=${pageSize}&pageNumber=${pageNumber}`)
   }
 
   getDashboardData() {

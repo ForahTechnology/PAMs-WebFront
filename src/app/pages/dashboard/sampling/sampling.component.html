@@ -58,10 +58,27 @@
         <span style=" font-weight: bolder; font-size: 20px;">All Samples List</span>
       </div>
       <div class="col-md-5 d-flex align-items-center" style=" font-weight: bolder; font-size: 14px;">
-        <div class="mr-4 p-relative">
+        <div>
+          <form class="d-flex mr-3" [formGroup]="addSearchForm">
+            <div class="form-row">
+              <div class="col-8">
+                <input type="text" formControlName="name" class="form-control">
+              </div>
+              <div class="col">
+                <button (click)="getSearchKeywords()" [disabled]="addSearchForm.invalid" class="btn btn-primary">
+                  <div *ngIf="isProcessing" class="spinner-border text-light spinner-border-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  Search
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="mr-4 p-relative">
           <img src="assets/search.svg" class="search-icon" alt="">
           <input class="form-control" type="text">
-        </div>
+        </div> -->
         <!-- <div class="mr-4">
           <img src="assets/sort.svg" alt="">
           <span>
@@ -124,6 +141,10 @@
           <p>Results</p>
         </button>
       </div>
+    </div>
+    <div class="row mt-3">
+      <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize" (pageChange)="loadPage($event)"
+        [collectionSize]="totalCollection"></ngb-pagination>
     </div>
   </section>
 </ng-container>
